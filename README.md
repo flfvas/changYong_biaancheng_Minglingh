@@ -9,7 +9,8 @@ https://papple23g-ahkcompiler.herokuapp.com/ahkblockly
 
 https://scratch.mit.edu/
 
-
+```
 ::创建差分VHDX
 diskpart
 create vdisk file="差分盘路径" parent="母盘路径"
+```

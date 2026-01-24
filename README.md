@@ -150,9 +150,10 @@ select disk 1
 Windows 官方推荐大小：**100 MB**，格式化为 FAT32。
 4k格式化要300M
 ```
+创建 EFI 分区，并自动“选中”它
 create partition efi size=300
+只格式化选中的efi, 不格式化disk 1
 format quick fs=fat32 label="System" unit=4096
-assign letter=S
 ```
 
 ---

@@ -56,6 +56,19 @@ exit
 ```
 
 
+
+## 先创建差分VHDX, 避免设置权限后创建失败<br>
+
+```
+diskpart
+```
+
+```
+create vdisk file="D:\VHD\NetdiskUpDifff.vhdx" parent="D:\VHD\Mother\NetdiskUp.vhdx"
+
+```
+
+
 ## 拒绝列出文件, 保护差分盘母盘<br>
 
 
@@ -64,21 +77,21 @@ exit
 假设目录是：
 
 ```
-D:\VHDX\Parent
+D:\VHDX\Mother
 ```
 
 ### **1. 设置隐藏文件夹关闭继承**
 
 ```
-attrib +s +h "D:\VHDX\Parent"
+attrib +s +h "D:\VHDX\Mother"
 ```
 
 ```
-attrib +h +s D:\VHDX\Parent\base.vhdx
+attrib +h +s D:\VHDX\Mother\NetdiskUp.vhdx
 ```
 
 ```
-icacls "D:\VHDX\Parent" /inheritance:r
+icacls "D:\VHDX\Mother" /inheritance:r
 ```
 
 ---
@@ -86,7 +99,7 @@ icacls "D:\VHDX\Parent" /inheritance:r
 ### **2. 给 SYSTEM 完全控制**
 
 ```
-icacls "D:\VHDX\Parent" /grant:r SYSTEM:(OI)(CI)(F)
+icacls "D:\VHDX\Mother" /grant:r SYSTEM:(OI)(CI)(F)
 ```
 
 ---
@@ -94,7 +107,7 @@ icacls "D:\VHDX\Parent" /grant:r SYSTEM:(OI)(CI)(F)
 ### **3. 拒绝你的账户 a 访问目录（关键）**
 
 ```
-icacls "D:\VHDX\Parent" /deny a:(OI)(CI)(F)
+icacls "D:\VHDX\Mother" /deny a:(OI)(CI)(F)
 ```
 
 ---
@@ -111,24 +124,6 @@ icacls "D:\VHDX\Parent" /deny a:(OI)(CI)(F)
 你自己完全无法看到或打开母盘文件，误双击也不可能破坏差分链。
 
 ---
-
-
-
-
-## 创建差分VHDX<br>
-
-```
-diskpart
-```
-
-```
-create vdisk file="差分盘路径" parent="母盘路径"
-```
-
-
-
-
-
 
 
 

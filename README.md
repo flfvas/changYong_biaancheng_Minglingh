@@ -59,6 +59,18 @@ exit
 ```
 
 
+## 先创建差分VHDX, 避免设置权限后权限不足<br>
+
+```
+diskpart
+```
+
+```
+create vdisk file="D:\VHD\NetdiskUpDifff.vhdx" parent="D:\VHD\Mother\NetdiskUp.vhdx"
+
+```
+
+
 ## 拒绝列出文件, 保护差分盘母盘<br>
 
 
@@ -118,22 +130,121 @@ icacls "D:\VHD\Mother" /deny a:(OI)(CI)(F)
 
 
 
-## 创建差分VHDX<br>
+
+===================================================================<br>
+
+# 顺序错误倒回<br>
+
+===================================================================<br>
+
+你现在遇到的情况非常典型：  
+**你给 a 添加了全部权限，但 DiskPart 依然无法创建差分盘。**  
+这说明问题根本不是“权限不足”，而是 **权限结构被 deny 覆盖了 allow**。
+
+在 NTFS 权限机制里：
+
+# 🚨 **Deny 永远优先于 Allow（拒绝 > 允许）**
+
+只要你之前对目录或母盘文件设置过：
+
+```
+icacls "D:\VHD\Mother" /deny a:(F)
+```
+
+或者
+
+```
+icacls "D:\VHD\Mother\NetdiskUp.vhdx" /deny a:(F)
+```
+
+那么：
+
+- 即使你后面执行了 `/grant a:(F)`  
+- **Deny 仍然生效，Allow 完全无效**  
+- DiskPart 依然无法读取母盘  
+- 最终报错：  
+  **文件或目录损坏且无法读取**
+
+这不是文件损坏，而是 **你被 deny 拦住了**。
+
+---
+
+# 🧩 **你现在必须做的：彻底删除 deny 规则**
+
+## 1. 删除目录上的 deny
+
+```
+icacls "D:\VHD\Mother" /remove:d a
+```
+
+## 2. 删除母盘文件上的 deny
+
+```
+icacls "D:\VHD\Mother\NetdiskUp.vhdx" /remove:d a
+```
+
+`/remove:d` 会删除所有 deny ACE。
+
+---
+
+# 🧩 **然后重新给 a 添加权限（这次才会生效）**
+
+```
+icacls "D:\VHD\Mother" /grant a:(OI)(CI)(F)
+icacls "D:\VHD\Mother\NetdiskUp.vhdx" /grant a:(F)
+```
+
+---
+
+# 🧩 **现在再创建差分盘就能成功**
+
+```
+diskpart
+create vdisk file="D:\VHD\NetdiskUpDifff.vhdx" parent="D:\VHD\Mother\NetdiskUp.vhdx"
+```
+
+---
+
+# 🧩 为什么 DiskPart 必须能读取母盘？
+
+因为创建差分盘时需要：
+
+- 读取母盘 header  
+- 读取 metadata region  
+- 读取 block allocation table  
+- 验证 parent locator  
+
+只要你有 deny，DiskPart 就会被拦住。
+
+---
+
+# 🧩 最稳的做法（推荐）
+
+以后你要创建差分盘时：
+
+### ✔ 用 SYSTEM 身份运行 DiskPart（永远不会被 deny）
+
+```
+psexec -sid cmd.exe
+```
+
+然后在 SYSTEM CMD 里运行：
 
 ```
 diskpart
 ```
 
-```
-create vdisk file="D:\VHD\NetdiskUpDifff.vhdx" parent="D:\VHD\Mother\NetdiskUp.vhdx"
+这样你就不需要给 a 添加权限，也不会破坏你的隐藏策略。
 
-```
+---
 
+# 🧩 如果你愿意，我可以帮你：
 
+- 做一个“一键 SYSTEM DiskPart”脚本  
+- 做一个“自动创建差分盘 + 自动恢复隐藏权限”的脚本  
+- 检查你当前的 ACL 是否还有残留 deny  
 
-
-
-
+你想继续往哪个方向深入。
 
 
 

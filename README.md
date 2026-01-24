@@ -32,6 +32,9 @@ bcdedit /set {current} description "Windows"
 
 
 
+
+
+
 ===================================================================<br>
 
 # VHDX相关命令<br>
@@ -56,19 +59,6 @@ exit
 ```
 
 
-
-## 先创建差分VHDX, 避免设置权限后创建失败<br>
-
-```
-diskpart
-```
-
-```
-create vdisk file="D:\VHD\NetdiskUpDifff.vhdx" parent="D:\VHD\Mother\NetdiskUp.vhdx"
-
-```
-
-
 ## 拒绝列出文件, 保护差分盘母盘<br>
 
 
@@ -77,21 +67,21 @@ create vdisk file="D:\VHD\NetdiskUpDifff.vhdx" parent="D:\VHD\Mother\NetdiskUp.v
 假设目录是：
 
 ```
-D:\VHDX\Mother
+D:\VHD\Mother
 ```
 
 ### **1. 设置隐藏文件夹关闭继承**
 
 ```
-attrib +s +h "D:\VHDX\Mother"
+attrib +s +h "D:\VHD\Mother"
 ```
 
 ```
-attrib +h +s D:\VHDX\Mother\NetdiskUp.vhdx
+attrib +h +s D:\VHD\Mother\NetdiskUp.vhdx
 ```
 
 ```
-icacls "D:\VHDX\Mother" /inheritance:r
+icacls "D:\VHD\Mother" /inheritance:r
 ```
 
 ---
@@ -99,7 +89,7 @@ icacls "D:\VHDX\Mother" /inheritance:r
 ### **2. 给 SYSTEM 完全控制**
 
 ```
-icacls "D:\VHDX\Mother" /grant:r SYSTEM:(OI)(CI)(F)
+icacls "D:\VHD\Mother" /grant:r SYSTEM:(OI)(CI)(F)
 ```
 
 ---
@@ -107,7 +97,7 @@ icacls "D:\VHDX\Mother" /grant:r SYSTEM:(OI)(CI)(F)
 ### **3. 拒绝你的账户 a 访问目录（关键）**
 
 ```
-icacls "D:\VHDX\Mother" /deny a:(OI)(CI)(F)
+icacls "D:\VHD\Mother" /deny a:(OI)(CI)(F)
 ```
 
 ---
@@ -124,6 +114,30 @@ icacls "D:\VHDX\Mother" /deny a:(OI)(CI)(F)
 你自己完全无法看到或打开母盘文件，误双击也不可能破坏差分链。
 
 ---
+
+
+
+
+## 创建差分VHDX<br>
+
+```
+diskpart
+```
+
+```
+create vdisk file="D:\VHD\NetdiskUpDifff.vhdx" parent="D:\VHD\Mother\NetdiskUp.vhdx"
+
+```
+
+
+
+
+
+
+
+
+
+
 
 
 

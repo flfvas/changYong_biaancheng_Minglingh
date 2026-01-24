@@ -26,3 +26,19 @@ create vdisk file="差分盘路径" parent="母盘路径"
 ```
 bcdedit /set {current} description "Windows"
 ```
+
+创建VHDX, 307200=300GBX1024
+```
+create vdisk file="D:\VHD\disk.vhdx" maximum=307200 type=expandable
+```
+
+创建VHDX
+```
+create vdisk file="D:\VHD\disk.vhdx" maximum=307200 type=expandable
+select vdisk file="D:\VHD\disk.vhdx"
+attach vdisk
+create partition primary
+format fs=ntfs unit=4096 quick label="VHDX300G"
+assign letter=V
+exit
+```

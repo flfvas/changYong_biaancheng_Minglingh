@@ -1,10 +1,3 @@
-# Markdown-chanGYongyuvfav
-
-<h1 style="background-color:#DDD0C8; color:#6B4C5B; border-radius:20px; padding:10px;">
-TitleHere
-</h1>
-
-
 
 ===================================================================<br>
 
@@ -126,6 +119,74 @@ icacls "D:\VHD\Mother" /deny a:(OI)(CI)(F)
 你自己完全无法看到或打开母盘文件，误双击也不可能破坏差分链。
 
 ---
+
+
+
+===================================================================<br>
+
+# Wepe不能运行diskgenius时创建efi分区<br>
+
+===================================================================<br>
+
+
+## 1. 进入 diskpart
+```
+diskpart
+```
+
+## 2. 列出磁盘
+```
+list disk
+```
+
+## 3. 选择目标磁盘（示例：Disk 1）
+```
+select disk 1
+```
+
+---
+
+# 📌 **创建 EFI System Partition（100MB）**
+Windows 官方推荐大小：**100 MB**，格式化为 FAT32。
+4k格式化要300M
+```
+create partition efi size=300
+format quick fs=fat32 label="System" unit=4096
+assign letter=S
+```
+
+---
+
+# 📌 **创建 MSR 分区（16MB）**
+Windows 官方标准：**16 MB**（不格式化、不分配盘符）。
+MSR 不格式化没有簇
+• 	MSR 没有文件系统
+• 	MSR 没有簇（cluster）
+• 	MSR 不挂载、不分配盘符
+
+```
+create partition msr size=16
+```
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -4,6 +4,13 @@
 TitleHere
 </h1>
 
+
+
+===================================================================<br>
+
+# 常用地址X<br>
+
+===================================================================<br>
 ```
 https://papple23g-ahkcompiler.herokuapp.com/ahkblockly
 ```
@@ -12,22 +19,25 @@ https://papple23g-ahkcompiler.herokuapp.com/ahkblockly
 https://scratch.mit.edu/
 ```
 
-::创建差分VHDX
-```
-diskpart
-```
+===================================================================<br>
 
-```
-create vdisk file="差分盘路径" parent="母盘路径"
-```
+# 修改当前启动系统启动名称<br>
 
-修改当前启动系统启动名称
+===================================================================<br>
 
 ```
 bcdedit /set {current} description "Windows"
 ```
 
-创建VHDX
+
+
+
+===================================================================<br>
+
+# 创建VHDX<br>
+
+===================================================================<br>
+
 ```
 创建vhdx文件
 create vdisk file="D:\VHD\disk.vhdx" maximum=307200 type=expandable
@@ -43,12 +53,6 @@ format fs=ntfs unit=4096 quick label="VHDX300G"
 assign letter=V
 退出命令行
 exit
-```
-
-
-母盘设置系统隐藏属性
-```
-attrib +h +s D:\VHDX\Parent\base.vhdx
 ```
 
 
@@ -75,6 +79,9 @@ D:\VHDX\Parent
 attrib +s +h "D:\VHDX\Parent"
 ```
 
+```
+attrib +h +s D:\VHDX\Parent\base.vhdx
+```
 
 ```
 icacls "D:\VHDX\Parent" /inheritance:r
@@ -131,7 +138,18 @@ icacls "D:\VHDX\Parent\base.vhdx" /deny a:(F)
 
 
 
+===================================================================<br>
 
+# 创建差分VHDX<br>
+
+===================================================================<br>
+```
+diskpart
+```
+
+```
+create vdisk file="差分盘路径" parent="母盘路径"
+```
 
 
 

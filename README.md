@@ -146,7 +146,7 @@ select disk 1
 
 ---
 
-# 📌 **创建 EFI System Partition（100MB）**
+## 📌 **创建 EFI System Partition（100MB）**
 Windows 官方推荐大小：**100 MB**，格式化为 FAT32。
 4k格式化要300M
 ```
@@ -158,7 +158,7 @@ format quick fs=fat32 label="System" unit=4096
 
 ---
 
-# 📌 **创建 MSR 分区（16MB）**
+## 📌 **创建 MSR 分区（16MB）**
 Windows 官方标准：**16 MB**（不格式化、不分配盘符）。
 MSR 不格式化没有簇
 • 	MSR 没有文件系统
@@ -181,7 +181,7 @@ create partition msr size=16
 
 ===================================================================<br>
 
-# 📌 **最简指令总结（你可以直接用）**
+## 📌 **最简指令总结（你可以直接用）**
 
 ```
 Shift + F10

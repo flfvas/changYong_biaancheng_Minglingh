@@ -218,45 +218,6 @@ create vdisk file="D:\VHD\NetdiskUpDifff.vhdx" parent="D:\VHD\Mother\NetdiskUp.v
 
 ---
 
-# 🧩 最稳的做法（推荐）
-
-以后你要创建差分盘时：
-
-### ✔ 用 SYSTEM 身份运行 DiskPart（永远不会被 deny）
-
-```
-psexec -sid cmd.exe
-```
-
-然后在 SYSTEM CMD 里运行：
-
-```
-diskpart
-```
-
-这样你就不需要给 a 添加权限，也不会破坏你的隐藏策略。
-
----
-
-# 🧩 如果你愿意，我可以帮你：
-
-- 做一个“一键 SYSTEM DiskPart”脚本  
-- 做一个“自动创建差分盘 + 自动恢复隐藏权限”的脚本  
-- 检查你当前的 ACL 是否还有残留 deny  
-
-你想继续往哪个方向深入。
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

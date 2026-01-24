@@ -69,7 +69,12 @@ attrib +h +s D:\VHDX\Parent\base.vhdx
 D:\VHDX\Parent
 ```
 
-## **1. 关闭继承**
+## **1. 设置隐藏文件夹关闭继承**
+
+```
+attrib +s +h "D:\VHDX\Parent"
+```
+
 
 ```
 icacls "D:\VHDX\Parent" /inheritance:r

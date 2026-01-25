@@ -201,11 +201,16 @@ OOBE\BYPASSNRO
 如果你不想暴露 VPN IP，可以允许返回内网地址（192.168.x.x）：
 
 设置：
-```ini
-media.peerconnection.enabled = true
-media.peerconnection.ice.default_address_only = false
-media.peerconnection.ice.no_host = false
 ```
+media.peerconnection.enabled
+``` = true
+```
+media.peerconnection.ice.default_address_only
+```= false
+```
+media.peerconnection.ice.no_host
+```= false
+
 
 ```
 intl.accept_languages
